@@ -93,6 +93,7 @@ report['source_sha256'] = digest(root / 'customer_number_processor_single.py')
 report['matcher_sha256'] = digest(root / 'library_matcher.py')
 report['exe_sha256'] = digest(exe)
 destination = root / 'artifacts/library-discovery/exe-check.json'
+destination.parent.mkdir(parents=True, exist_ok=True)
 fd, temporary = tempfile.mkstemp(dir=destination.parent)
 with os.fdopen(fd, 'w', encoding='utf-8') as stream:
     json.dump(report, stream, ensure_ascii=False, indent=2)

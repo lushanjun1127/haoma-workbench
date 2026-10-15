@@ -70,9 +70,13 @@ pyinstaller 号码工作台.spec
 ├── README.md
 ├── LICENSE                               # GPLv3
 ├── .gitignore
+├── docs/
+│   └── delivery-readme.md                # 交付目录内 readme.md 的源文件
 ├── tests/                                # pytest 用例
 │   ├── test_library_matcher.py
-│   └── test_library_ui.py
+│   ├── test_library_ui.py
+│   └── fixtures/
+│       └── protected_core_baseline.py    # 保护核心回归基线快照
 └── tools/                                # 校验与打包辅助脚本
     ├── check_library_exe.py
     ├── check_library_ui.py
@@ -133,7 +137,7 @@ GUI 两个页面均可选择编码，CLI 可使用 `--encoding`，环境变量 `
 
 ## 验证范围
 
-`tests` 覆盖第二次替换失败、回滚失败及恢复、遗留 pending 清单恢复、CLI 双入口和失败状态、校验分类及有限样例、编码、取消保留旧输出、外部多轮归并、窗口初始化和主题切换。
+`tests` 覆盖第二次替换失败、回滚失败及恢复、遗留 pending 清单恢复、CLI 双入口和失败状态、校验分类及有限样例、编码、取消保留旧输出、外部多轮归并、窗口初始化和主题切换，以及保护核心回归（对 `tests/fixtures/protected_core_baseline.py` 做 AST 对比，确保解析、过滤、事务、CLI 与既有信号连接未被改动）。
 
 ```powershell
 python -m pytest -q

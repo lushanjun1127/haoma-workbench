@@ -14,7 +14,7 @@ args = parser.parse_args()
 assert len(list(delivery.glob('*.exe'))) == 1, 'Build the exe first'
 sources = [(root / name, name) for name in
            ('invalid_customers.txt', 'opened_customers.txt', 'valid_customers.txt')]
-sources.append((root / 'artifacts/library-discovery/readme.md', 'readme.md'))
+sources.append((root / 'docs/delivery-readme.md', 'readme.md'))
 for source, name in sources:
     fd, temporary = tempfile.mkstemp(dir=delivery, suffix='.tmp')
     try:

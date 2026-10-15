@@ -16,6 +16,7 @@ import customer_number_processor_single as m
 app = QApplication([])
 app.setStyle('Fusion')
 destination = root / 'artifacts/library-discovery'
+destination.mkdir(parents=True, exist_ok=True)
 
 def save_picture(window, name):
     fd, temporary = tempfile.mkstemp(dir=destination, suffix='.png')
