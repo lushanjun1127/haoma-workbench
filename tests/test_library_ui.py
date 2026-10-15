@@ -65,7 +65,17 @@ def test_startup_source_supplement_and_manual_rescan(ui, tmp_path):
     assert tab.category_files[m.CLASSIFY_FILES['valid']].text() == str(source_dir / 'valid_customers.txt')
     assert tab.category_files[m.CLASSIFY_FILES['invalid']].text() == str(program / 'invalid_customers.txt')
     assert all(label.text() == '自动发现' for label in tab.library_state_labels.values())
-    (source_dir / 'valid_customers.txt').unlink()
+    # 后台统计线程可能仍持有该文件句柄；Windows 文件锁下需等其释放后再删除。
+    deadline = time.monotonic() + 5
+    while True:
+        try:
+            (source_dir / 'valid_customers.txt').unlink()
+            break
+        except PermissionError:
+            if time.monotonic() > deadline:
+                raise
+            app.processEvents()
+            time.sleep(.02)
     tab.rescan_btn.click()
     assert tab.category_files[m.CLASSIFY_FILES['valid']].text() == ''
     assert tab.library_state_labels[m.CLASSIFY_FILES['valid']].text() == '未找到请手动选择'
